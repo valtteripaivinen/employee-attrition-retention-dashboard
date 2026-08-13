@@ -1,0 +1,83 @@
+-- Rename hr_employee_analytics to HR and hr_attrition_drivers to Drivers.
+-- Create each item below separately with Modeling > New measure.
+
+Headcount = DISTINCTCOUNT(HR[employee_number])
+
+Attritions =
+CALCULATE([Headcount], HR[attrition] = "Yes")
+
+Retained Employees =
+CALCULATE([Headcount], HR[attrition] = "No")
+
+Attrition Rate % =
+DIVIDE([Attritions], [Headcount])
+
+Retention Rate % =
+DIVIDE([Retained Employees], [Headcount])
+
+Average Age = AVERAGE(HR[age])
+
+Average Monthly Income = AVERAGE(HR[monthly_income])
+
+Average Years at Company = AVERAGE(HR[years_at_company])
+
+Average Job Satisfaction = AVERAGE(HR[job_satisfaction])
+
+Average Environment Satisfaction = AVERAGE(HR[environment_satisfaction])
+
+Average Work-Life Balance = AVERAGE(HR[work_life_balance])
+
+Average Job Involvement = AVERAGE(HR[job_involvement])
+
+Average Distance from Home = AVERAGE(HR[distance_from_home])
+
+Overtime Employees =
+CALCULATE([Headcount], HR[over_time] = "Yes")
+
+Overtime Rate % =
+DIVIDE([Overtime Employees], [Headcount])
+
+Overtime Attrition Rate % =
+CALCULATE([Attrition Rate %], HR[over_time] = "Yes")
+
+Non-Overtime Attrition Rate % =
+CALCULATE([Attrition Rate %], HR[over_time] = "No")
+
+Overtime Attrition Gap =
+[Overtime Attrition Rate %] - [Non-Overtime Attrition Rate %]
+
+Employees with Low Job Satisfaction =
+CALCULATE([Headcount], HR[job_satisfaction] <= 2)
+
+Low Job Satisfaction Rate % =
+DIVIDE([Employees with Low Job Satisfaction], [Headcount])
+
+Employees with Elevated Factor Band =
+CALCULATE(
+    [Headcount],
+    HR[descriptive_factor_band] = "3. Elevated"
+)
+
+Elevated Factor Band Rate % =
+DIVIDE([Employees with Elevated Factor Band], [Headcount])
+
+Average Salary Hike % =
+DIVIDE(AVERAGE(HR[percent_salary_hike]), 100)
+
+Average Years Since Promotion =
+AVERAGE(HR[years_since_last_promotion])
+
+Average Training Sessions =
+AVERAGE(HR[training_times_last_year])
+
+Average Job Involvement =
+AVERAGE(HR[job_involvement])
+
+Driver Headcount = SUM(Drivers[headcount])
+
+Driver Attritions = SUM(Drivers[attritions])
+
+Driver Attrition Rate % =
+DIVIDE([Driver Attritions], [Driver Headcount])
+
+Driver Attrition Lift = AVERAGE(Drivers[attrition_lift])
